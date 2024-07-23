@@ -17,7 +17,7 @@ This dataset has been taken for kaggle which contains user behavioral informatio
 
 **Tech Stack:** <br>
 Languages: <br>
-SQL, Python3
+SQL, Python3 <br>
 Services : <br>
 AWS S3, AWS Glue, AWS Athena, AWS Cloud9, Apache Flink, Amazon Kinesis, Amazon SNS, AWS Lambda, Amazon CloudWatch, QuickSight, Apache Zepplin, Amazon DynamoDB, AWS Glue DataBrew
 
