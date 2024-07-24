@@ -49,7 +49,32 @@ First, we have created a streaming notebook ecommerce-streaming-app-v1 based on 
 From source stream ecommerce-raw-user-activity-stream-1, we are creating a table ecomm_user_activity_stream_1 and storing all the values of our record, in addition to that , we are creating a watermark over the transaction time stamp for an interval of 10 secs. We are creating another table ecomm_user_activity_stream_2 from the destination stream ecommerce-raw-user-activity-stream-2 where we are storing the user id and the count of that in the 10 secs interval. <br>
 Now we build and export the notebook to upload it as a code archive in the s3 location we specified earlier while creation of the note book, then, we deployed this notebook as a flink kinesis analytics application with the source code that we created in the zeppelin notebook stored under ecommerce-raw-apsouth1-144025787116-dev/ecommerce-streaming-app-v1/zeppelin-code. <br>
 
-![image](https://github.com/user-attachments/assets/bd8ad95e-ee64-4c68-971d-105fa33cd1f7)
+![image](https://github.com/user-attachments/assets/bd8ad95e-ee64-4c68-971d-105fa33cd1f7) <br>
+
+**Creation of Lambda function and processing the records from destination stream:** <br>
+
+The lambda function will read the destination stream ecommerce-raw-user-activity-stream-2 and detect the DDos events as per the criteria we have set. We are creating a package by installing the aws_kinesis_agg library from which we are using the deaggregator function to deaggregate the records from the destination stream. The record from the destination stream is base64 encoded so we decode it and convert it to json format. Then we are sending the user id and the number of action per watermark to a Dynamo DB table. Along with these we are sending these two fields in a cloudwatch metric. A SNS topic has been created where the lambda function will publish in case there are any user id detected which is doing more than 10 actions in an interval of 10 secs. An-email has been set as subscription for the SNS topic so everytime lambda publishes in the SNS topic, it will trigger an e-mail notification. <br>
+
+DynamoDB table with the user_id and the num_of_actions_watermark data, for the partiion key we are using the nomenclature userid#{}#appserver#{} and for sort key we are using the current time stamp. <br>
+
+![image](https://github.com/user-attachments/assets/4c21e66e-54ed-4a2b-baa3-2122b9086adf) <br>
+
+On successful processing of a record from destination stream, the lambda function is pushing logs in cloudwatch. <br>
+
+![image](https://github.com/user-attachments/assets/768d3ff6-df13-479a-a556-2372e9945a08) <br>
+
+Since our sample dataset did not have any user id with more than 10 actions in 10 secs interval, we created a test event in lambda which matches the criteria and ran it, the lambda function has published in the SNS topic which has triggered an e-mail. <br>
+
+![image](https://github.com/user-attachments/assets/ed4b96cc-1c1a-4b7b-93d8-8d2c96439704)
+
+
+
+
+
+
+
+
+
 
 
 
