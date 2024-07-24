@@ -1,0 +1,5 @@
+pip install aws_kinesis_agg -t .
+
+zip -r ../lambda_package.zip .
+
+aws s3 cp lambda_package.zip s3://ecommerce-raw-apsouth1-144025787116-dev/src/lambda/
