@@ -1,0 +1,15 @@
+cloudwatch_metric	
+
+	--> ecomm-user-high-volume-events
+
+cloudwatch_namespace	
+
+	--> ecommerce-namespace-1
+	
+dynamodb_control_table
+
+	--> ddb-ecommerce-tab-1
+
+topic_arn
+	
+	--> <PASTE HERE YOUR OWN TOPIC ARN>
